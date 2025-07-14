@@ -1,0 +1,13 @@
+services:
+  duaa-lesson-content-generator-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./:/app
+      - /Users/apple/Duaa/duaa-edtools:/duaa-edtools
+      - /Users/apple/.aws:/root/.aws
+    working_dir: /app
+    tty: true
+    stdin_open: true
+    command: /bin/bash -c "pip install -e /duaa-edtools && /bin/bash"

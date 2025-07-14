@@ -1,0 +1,22 @@
+FROM python:3.10-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+COPY test-requirements.txt .
+
+RUN pip install --upgrade pip setuptools wheel \
+    && pip install --no-cache-dir -r requirements.txt
+
+RUN pip install --no-cache-dir -r test-requirements.txt
+
+COPY . .
+
+ENV CLASS="KG1"
+ENV LESSON_NUMBER=1
+ENV SUBJECT_NAME="English"
+ENV LANGUAGE="English"
+ENV EVENT_NAME="generate_slides"
+ENV TIMESTAMP="2025-07-02-17-53-15"
+
+CMD ["/bin/bash"]
