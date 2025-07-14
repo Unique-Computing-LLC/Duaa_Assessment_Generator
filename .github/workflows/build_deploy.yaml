@@ -50,53 +50,53 @@ jobs:
           pytest --cov
         # working-directory: extractor
 
-  build-and-push-ecr:
-    needs: test
-    runs-on: ubuntu-latest
+  # build-and-push-ecr:
+  #   needs: test
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+  #     - name: Set up QEMU
+  #       uses: docker/setup-qemu-action@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v3
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+  #     - name: Configure AWS credentials
+  #       uses: aws-actions/configure-aws-credentials@v4
+  #       with:
+  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #         aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
+  #     - name: Login to Amazon ECR
+  #       id: login-ecr
+  #       uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build and push Docker image
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: duaa-html-slides-generator
-          IMAGE_TAG: ${{ github.sha }}
-          TIMESTAMP: ${{ steps.timestamp.outputs.time }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          DUAA_EDTOOLS_SECRET_NAME: duaa_eddtools_credentials
+  #     - name: Build and push Docker image
+  #       env:
+  #         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+  #         ECR_REPOSITORY: duaa-html-slides-generator
+  #         IMAGE_TAG: ${{ github.sha }}
+  #         TIMESTAMP: ${{ steps.timestamp.outputs.time }}
+  #         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #         AWS_REGION: ${{ secrets.AWS_REGION }}
+  #         DUAA_EDTOOLS_SECRET_NAME: duaa_eddtools_credentials
 
-        run: |
-          TIMESTAMP=$(date +"%Y-%m-%d-%H-%M-%S")
-          DOCKER_BUILDKIT=1 docker build \
-            --secret id=AWS_ACCESS_KEY_ID,env=AWS_ACCESS_KEY_ID \
-            --secret id=AWS_SECRET_ACCESS_KEY,env=AWS_SECRET_ACCESS_KEY \
-            --secret id=AWS_REGION,env=AWS_REGION \
-            --secret id=DUAA_EDTOOLS_SECRET_NAME,env=DUAA_EDTOOLS_SECRET_NAME \
-            -t $ECR_REGISTRY/$ECR_REPOSITORY:latest \
-            -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
-            -t $ECR_REGISTRY/$ECR_REPOSITORY:$TIMESTAMP .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$TIMESTAMP
+  #       run: |
+  #         TIMESTAMP=$(date +"%Y-%m-%d-%H-%M-%S")
+  #         DOCKER_BUILDKIT=1 docker build \
+  #           --secret id=AWS_ACCESS_KEY_ID,env=AWS_ACCESS_KEY_ID \
+  #           --secret id=AWS_SECRET_ACCESS_KEY,env=AWS_SECRET_ACCESS_KEY \
+  #           --secret id=AWS_REGION,env=AWS_REGION \
+  #           --secret id=DUAA_EDTOOLS_SECRET_NAME,env=DUAA_EDTOOLS_SECRET_NAME \
+  #           -t $ECR_REGISTRY/$ECR_REPOSITORY:latest \
+  #           -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
+  #           -t $ECR_REGISTRY/$ECR_REPOSITORY:$TIMESTAMP .
+  #         docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+  #         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+  #         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$TIMESTAMP
         # working-directory: extractor
