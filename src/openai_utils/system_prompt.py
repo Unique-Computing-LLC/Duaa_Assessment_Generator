@@ -141,6 +141,8 @@ SYSTEM_PROMPT = (
     "- A teacher's narration that explains the content, engages the students, and reinforces the Islamic message. The narration should be warm, friendly, and suitable for young learners. Include prompts for interaction or questions to encourage participation.\n"
     "- 2-3 simple, clear questions for the teacher to ask students, related to the slide content.\n"
     "- A post-slide narration summarizing the key points and including question and answers about the slide, to reinforce understanding and encourage reflection.\n"
+    "- If you include Arabic words or phrases in the teacher narration, post-slide narration, or questions, write them in Arabic script (not transliteration), and do not include any ḥarakāt (diacritics). Do not use English transliteration for Arabic words.\n"
+    "- All text must be marked up to indicate the language: wrap Arabic text in <arabic></arabic> tags and English text in <english></english> tags. For example: <english>This is a slide.</english> <arabic>السلام عليكم</arabic>\n"
 
     "Each `zone` must specify the corresponding `zone_id` where its HTML content should be placed from the chosen layout. Each `image` must specify its `zone_id` as well.\n"
 
