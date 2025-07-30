@@ -26,7 +26,7 @@ def main() -> None:
     logger.debug(f"Loaded event: {event}")
 
     logger.info("Fetching extracted tg file from S3.")
-    extracted_tg_file = fetch_file_from_s3(f"{config.EVENT_DIR}/resources/tg_extracted.md", "/tmp/tg_extracted.md")
+    extracted_tg_file = fetch_file_from_s3(f"{config.LESSON_DIR}/resources/tg_extracted.md", "/tmp/tg_extracted.md")
     logger.info("Fetching lesson plan file from S3.")
     lesson_plan_file = fetch_file_from_s3(f"{config.LESSON_DIR}/lesson_plan.csv", "/tmp/lesson_plan.csv")
     
