@@ -12,13 +12,18 @@ RUN pip install --no-cache-dir -r test-requirements.txt
 
 COPY . .
 
-ENV CLASS="KG1"
-ENV LESSON_NUMBER=1
-ENV SUBJECT_NAME="English"
-ENV LANGUAGE="English"
-ENV EVENT_NAME="refine_audio_content"
-ENV TIMESTAMP="2025-07-10-18-52-06"
-ENV RUN_TYPE="audio_refinement"
-ENV SLIDE_NO=0
-ENV END_USER_PROMPT="Generate new slide narration having exact narration as following: Assalam o Alaikum, How are you students?"
+# ENV CLASS="KG1"
+# ENV LESSON_NUMBER=1
+# ENV SUBJECT_NAME="English"
+# ENV LANGUAGE="English"
+# ENV EVENT_NAME="refine_audio_content"
+# ENV TIMESTAMP="2025-07-10-18-52-06"
+# ENV RUN_TYPE="audio_refinement"
+# ENV SLIDE_NO=0
+# ENV END_USER_PROMPT="Generate new slide narration having exact narration as following: Assalam o Alaikum, How are you students?"
+
+
+ENV PIPELINE_INPUT="{\"CLASS\": \"KG1\", \"LESSON_NUMBER\": 1, \"SUBJECT_NAME\": \"English\", \"LANGUAGE\": \"English\", \"EVENT_NAME\": \"refine_audio_content\", \"TIMESTAMP\": \"2025-07-10-18-52-06\", \"RUN_TYPE\": \"audio_refinement\", \"SLIDE_NO\": 0, \"END_USER_PROMPT\": \"Generate new slide narration having exact narration as following: Assalam o Alaikum, How are you students?\"}"
+
+
 CMD ["/bin/bash"]

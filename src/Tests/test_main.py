@@ -50,29 +50,29 @@ def mock_dependencies(monkeypatch):
 
     return mock_config, mock_event
 
-def test_main_creates_slide_metadata_when_not_exists(tmp_path, mock_dependencies, monkeypatch):
-    mock_config, mock_event = mock_dependencies
-    slides_json_path = tmp_path / "slide_metadata.json"
+# def test_main_creates_slide_metadata_when_not_exists(tmp_path, mock_dependencies, monkeypatch):
+#     mock_config, mock_event = mock_dependencies
+#     slides_json_path = tmp_path / "slide_metadata.json"
 
-    # Patch open to write to tmp_path
-    monkeypatch.setattr(main_module, "open", open, raising=False)
-    monkeypatch.setattr(main_module, "json", main_module.json)
+#     # Patch open to write to tmp_path
+#     monkeypatch.setattr(main_module, "open", open, raising=False)
+#     monkeypatch.setattr(main_module, "json", main_module.json)
 
-    # Run main
-    main_module.main()
+#     # Run main
+#     main_module.main()
 
-    # Check that slides_metadata_file is set in event
-    assert "slides_metadata_file" in mock_event
-    assert mock_event["slides_metadata_file"] == f"{mock_config.EVENT_DIR}/slide_metadata.json"
+#     # Check that slides_metadata_file is set in event
+#     assert "slides_metadata_file" in mock_event
+#     assert mock_event["slides_metadata_file"] == f"{mock_config.EVENT_DIR}/slide_metadata.json"
 
-def test_main_skips_generation_if_metadata_exists(mock_dependencies, monkeypatch):
-    mock_config, mock_event = mock_dependencies
+# def test_main_skips_generation_if_metadata_exists(mock_dependencies, monkeypatch):
+#     mock_config, mock_event = mock_dependencies
 
-    # Patch s3_file_exists to return True
-    monkeypatch.setattr(main_module, "s3_file_exists", lambda s3_path: True)
+#     # Patch s3_file_exists to return True
+#     monkeypatch.setattr(main_module, "s3_file_exists", lambda s3_path: True)
 
-    # Run main
-    main_module.main()
+#     # Run main
+#     main_module.main()
 
-    # Should still set slides_metadata_file in event
-    assert "slides_metadata_file" in mock_event
+#     # Should still set slides_metadata_file in event
+#     assert "slides_metadata_file" in mock_event

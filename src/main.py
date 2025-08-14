@@ -8,7 +8,7 @@ from duaa_edtools.utils import send_task_success
 
 from .openai_utils.slide_generator import generate_lecture_slides_metadata
 from .openai_utils.refine_slide_audio import refine_slide_audio
-from .utils.env import Env
+from .utils.system import get_run_type
 
 from pathlib import Path
 from typing import Any, Dict
@@ -20,8 +20,8 @@ import os
 
 @exhandler
 def main() -> None:
-    env = Env()
-    event_name: str = "refine_audio_content" if env.RUN_TYPE == "audio_refinement" else "generate_lesson_content"
+    RUN_TYPE = get_run_type()
+    event_name: str = "refine_audio_content" if RUN_TYPE == "audio_refinement" else "generate_lesson_content"
     logger.info(f"Starting slide metadata generation for event: {event_name}")
     config: Any = duaa_config.load_config(event_name)
     logger.debug(f"Loaded config: {config}")
@@ -29,14 +29,19 @@ def main() -> None:
     logger.debug(f"Loaded event: {event}")
 
     if event_name == "refine_audio_content":
-        return_dict = refine_slide_audio(event, config)
-        return_dict.update({
+        return_event = refine_slide_audio(event, config)
+        event.update(return_event)
+
+        return_dict = {
             "TIMESTAMP": config.TIMESTAMP,
             "CLASS": config.CLASS,
             "LESSON_NUMBER": config.LESSON_NUMBER,
             "SUBJECT_NAME": config.SUBJECT_NAME,
             "LANGUAGE": config.LANGUAGE,
-        })
+            "RUN_TYPE": config.RUN_TYPE,
+            "SLIDE_NO": config.SLIDE_NO,
+            "END_USER_PROMPT": config.END_USER_PROMPT
+        }
 
     else:
     
@@ -76,6 +81,7 @@ def main() -> None:
             "LESSON_NUMBER": config.LESSON_NUMBER,
             "SUBJECT_NAME": config.SUBJECT_NAME,
             "LANGUAGE": config.LANGUAGE,
+            "RUN_TYPE": config.RUN_TYPE,
         }
 
     save_event(config, event)

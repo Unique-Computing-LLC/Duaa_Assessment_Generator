@@ -62,7 +62,7 @@ def refine_slide_audio(
         json.dump(updated_slide_deck_metadata, f, ensure_ascii=False, indent=2)
 
     write_file_to_s3(updated_metadata_path, s3_slide_metadata_file)
-
+    
     return {
         "SLIDE_NO": config.SLIDE_NO,
         "USER_PROMPT": config.END_USER_PROMPT,
