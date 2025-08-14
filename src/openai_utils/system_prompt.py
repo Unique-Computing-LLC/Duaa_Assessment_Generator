@@ -156,6 +156,7 @@ SYSTEM_PROMPT = (
     '  "lesson_name": "{lesson_name}",\n'
     '  "slides": [\n'
     "    {{\n"
+    '      "slide_id": "Integer slide ID as per the location of the slide in the list. e.g. 0, 1, 2, 3"'
     '      "title": "Slide Title",\n'
     '      "layout_id": "layout_id_string",\n'
     '      "zones": [\n'
