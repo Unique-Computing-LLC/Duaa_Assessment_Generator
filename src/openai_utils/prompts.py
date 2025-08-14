@@ -24,3 +24,14 @@ IMAGE_PROMPT = (
     "The illustration should have following hexa color #FFF4ED as the background, no outlines, flat style."
     "Do not include any text or names in the image. "
 ) 
+
+
+AUDIO_REFINEMENT_PROMPT = """
+You are an expert educator and curriculum designer. Given the following metadata used to generate lecture slide content for a particular lesson, and the refinement needed in the audio content. Update the JSON with new audio content according to the Audio Refinement Needs specified below.
+
+Lesson Metadata:
+{slide_metadata}
+
+Audio Refinement Needs:
+{audio_refinement_prompt}
+"""

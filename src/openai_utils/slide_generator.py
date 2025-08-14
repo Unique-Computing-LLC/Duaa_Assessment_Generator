@@ -13,19 +13,6 @@ def generate_lecture_slides_metadata(
     """
     Sends teacher_guidelines and lesson_content to OpenAI and returns lecture slide content in JSON format.
     """
-    # Define a JSON schema for the model to follow
-    json_schema = (
-        "The output must strictly follow this JSON schema:\n"
-        "{\n"
-        '  "class_name": "<class name here>",\n'
-        '  "lesson_name": "<lesson name here>",\n'
-        '  "slides": [\n'
-        "    {\"title\": \"...\", \"image_prompt\":[Prompt to create suitable image/images for the slide], \"text\": [minimal text required in the slides as per the class and age group] \"},\n"
-        "    ...\n"
-        "  ]\n"
-        "}\n"
-        "Do not include any text or explanation outside the JSON object."
-    )
 
     system_prompt = SYSTEM_PROMPT.format(class_name=class_name, lesson_name=lesson_name, layout_templates=json.dumps(SLIDE_LAYOUTS))
     user_prompt = (
