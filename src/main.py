@@ -8,7 +8,9 @@ from duaa_edtools.utils import send_task_success
 
 from .openai_utils.slide_generator import generate_lecture_slides_metadata
 from .openai_utils.refine_slide_audio import refine_slide_audio
+from .openai_utils.refine_slide_metadata import refine_slide_metadata
 from .utils.system import get_run_type
+from .utils.consts import EVENT_NAME_MAP
 
 from pathlib import Path
 from typing import Any, Dict
@@ -18,10 +20,12 @@ import logging
 import os
 
 
+
+
 @exhandler
 def main() -> None:
     RUN_TYPE = get_run_type()
-    event_name: str = "refine_audio_content" if RUN_TYPE == "audio_refinement" else "generate_lesson_content"
+    event_name: str = EVENT_NAME_MAP.get(RUN_TYPE, "generate_lesson_content")
     logger.info(f"Starting slide metadata generation for event: {event_name}")
     config: Any = duaa_config.load_config(event_name)
     logger.debug(f"Loaded config: {config}")
@@ -41,6 +45,24 @@ def main() -> None:
             "RUN_TYPE": config.RUN_TYPE,
             "SLIDE_NO": config.SLIDE_NO,
             "END_USER_PROMPT": config.END_USER_PROMPT
+        }
+    elif event_name == "refine_slide_content":
+        logger.info("Refining slide content.")
+        # Assuming refine_slide_content is implemented similarly to refine_slide_audio
+        # This function should be defined in the same way as refine_slide_audio
+        return_event = refine_slide_metadata(event, config)
+        
+        event.update(return_event)
+
+        return_dict = {
+            "TIMESTAMP": config.TIMESTAMP,
+            "CLASS": config.CLASS,
+            "LESSON_NUMBER": config.LESSON_NUMBER,
+            "SUBJECT_NAME": config.SUBJECT_NAME,
+            "LANGUAGE": config.LANGUAGE,
+            "RUN_TYPE": config.RUN_TYPE,
+            "SLIDE_NO": config.SLIDE_NO,
+            "END_USER_PROMPT": config.END_USER_PROMPT   
         }
 
     else:

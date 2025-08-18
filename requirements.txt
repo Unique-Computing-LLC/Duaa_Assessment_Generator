@@ -4,3 +4,4 @@ s3path
 pandas
 openai
 requests
+instructor

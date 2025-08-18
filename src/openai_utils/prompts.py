@@ -35,3 +35,17 @@ Lesson Metadata:
 Audio Refinement Needs:
 {audio_refinement_prompt}
 """
+
+SLIDE_REFINEMENT_PROMPT = """
+
+You are an expert educator and curriculum designer. Given the following metadata used to generate lecture slide content for a particular lesson, and the refinement needed in the slide content. Update the JSON with new slide content according to the Slide Refinement Needs specified below.
+
+You can choose to refine the existing slide content or redesign it completely if asked in the Slide Refinement Needs, based on the provided layout templates.
+
+Lesson Metadata:
+{slide_metadata}
+
+Slide Refinement Needs:
+{slide_refinement_prompt}
+
+"""
