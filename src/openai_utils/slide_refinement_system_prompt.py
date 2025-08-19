@@ -45,4 +45,5 @@ SYSTEM_PROMPT = (
     "- Output only the updated single slide metadata following the `Slide` model.\n"
     "- Do not wrap it in an outer object like SlideData.\n"
     "- Do not output explanations or reasoning — only valid JSON matching the schema.\n"
+    "- If the images, post_sldie_narration and teacher_narration is different in the new and old metadata. And if the images or slide narrations will need to be re generated in the next steps. You must update the relevent fields in the output json schema with True or False. So that the images and audio files could be regenerated."
 )

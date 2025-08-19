@@ -23,6 +23,10 @@ def refine_slide_metadata(
         slide_deck_metadata = json.load(f)
 
     slide_metadata = slide_deck_metadata['slides'][int(config.SLIDE_NO)]
+
+    print(json.dumps(slide_metadata, indent=2, ensure_ascii=False))
+    print(config.END_USER_PROMPT)
+
     system_prompt = SYSTEM_PROMPT.format(layout_templates=json.dumps(SLIDE_LAYOUTS))
 
     user_prompt = (
@@ -45,7 +49,7 @@ def refine_slide_metadata(
     print("REFINED SLIDE METADATA:", slides_json.model_dump_json(indent=2))
 
     write_file_to_s3(updated_metadata_path, s3_slide_metadata_file)
-    print("file uploaded to S3.")
+    print("file uploaded to S3. at path ", s3_slide_metadata_file)
     return {
         "SLIDE_NO": config.SLIDE_NO,
         "USER_PROMPT": config.END_USER_PROMPT,

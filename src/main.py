@@ -20,8 +20,6 @@ import logging
 import os
 
 
-
-
 @exhandler
 def main() -> None:
     RUN_TYPE = get_run_type()
@@ -66,7 +64,6 @@ def main() -> None:
         }
 
     else:
-    
         logger.info("Fetching extracted tg file from S3.")
         extracted_tg_file = fetch_file_from_s3(f"{config.LESSON_DIR}/resources/tg_extracted.md", "/tmp/tg_extracted.md")
         logger.info("Fetching lesson plan file from S3.")
