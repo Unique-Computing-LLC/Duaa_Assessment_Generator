@@ -41,6 +41,7 @@ def main() -> None:
             "SUBJECT_NAME": config.SUBJECT_NAME,
             "LANGUAGE": config.LANGUAGE,
             "RUN_TYPE": config.RUN_TYPE,
+            "RUN_ID": config.RUN_ID,
             "SLIDE_NO": config.SLIDE_NO,
             "END_USER_PROMPT": config.END_USER_PROMPT
         }
@@ -60,6 +61,7 @@ def main() -> None:
             "LANGUAGE": config.LANGUAGE,
             "RUN_TYPE": config.RUN_TYPE,
             "SLIDE_NO": config.SLIDE_NO,
+            "RUN_ID": config.RUN_ID,
             "END_USER_PROMPT": config.END_USER_PROMPT   
         }
 
@@ -100,6 +102,7 @@ def main() -> None:
             "LESSON_NUMBER": config.LESSON_NUMBER,
             "SUBJECT_NAME": config.SUBJECT_NAME,
             "LANGUAGE": config.LANGUAGE,
+            "RUN_ID": config.RUN_ID,
             "RUN_TYPE": config.RUN_TYPE,
         }
 
