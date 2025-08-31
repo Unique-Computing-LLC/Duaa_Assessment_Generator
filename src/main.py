@@ -5,6 +5,7 @@ from duaa_edtools.utils.logger import logger
 from duaa_edtools.utils.s3 import fetch_file_from_s3, write_file_to_s3, s3_file_exists
 from duaa_edtools.utils.aws_secret_manager import get_aws_secrets
 from duaa_edtools.utils import send_task_success
+from duaa_edtools.api import load_api_credentials
 
 from .openai_utils.slide_generator import generate_lecture_slides_metadata
 from .openai_utils.refine_slide_audio import refine_slide_audio
@@ -23,6 +24,7 @@ import os
 @exhandler
 def main() -> None:
     RUN_TYPE = get_run_type()
+    load_api_credentials()
     event_name: str = EVENT_NAME_MAP.get(RUN_TYPE, "generate_lesson_content")
     logger.info(f"Starting slide metadata generation for event: {event_name}")
     config: Any = duaa_config.load_config(event_name)
