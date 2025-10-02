@@ -12,6 +12,7 @@ from .openai_utils.refine_slide_audio import refine_slide_audio
 from .openai_utils.refine_slide_metadata import refine_slide_metadata
 from .utils.system import get_run_type
 from .utils.consts import EVENT_NAME_MAP
+from .step_functions import execute_workflow
 
 from pathlib import Path
 from typing import Any, Dict
@@ -97,6 +98,30 @@ def main() -> None:
             logger.debug(f"Uploading slides metadata to S3: {s3_slide_json_filepath}")
             write_file_to_s3(slides_json_path, s3_slide_json_filepath)
             logger.info(f"Uploaded the slide metadata to S3 at {s3_slide_json_filepath}")
+
+        # Execute question generation workflow
+        logger.info("Starting question generation workflow...")
+        try:
+            workflow_result = execute_workflow(
+                course_id=f"{config.SUBJECT_NAME}_{config.CLASS}",
+                course_name=f"{config.SUBJECT_NAME} - Class {config.CLASS}",
+                day_id=f"DAY_{config.LESSON_NUMBER:03d}",
+                day_name=f"Day {config.LESSON_NUMBER}: {lesson_plan['topic']}",
+                lesson_id=f"LESSON_{config.LESSON_NUMBER:03d}",
+                lesson_name=f"Lesson {config.LESSON_NUMBER}: {lesson_plan['topic']}",
+                topic=lesson_plan['topic'],
+                num_questions=5
+            )
+            
+            if workflow_result["success"]:
+                logger.info(f"Question generation completed: {workflow_result['questions_assigned']} questions assigned")
+                event['question_generation_result'] = workflow_result
+            else:
+                logger.error(f"Question generation failed: {workflow_result.get('error')}")
+                event['question_generation_error'] = workflow_result.get('error')
+        except Exception as e:
+            logger.error(f"Question generation error: {e}")
+            event['question_generation_error'] = str(e)
 
         return_dict = {
             "TIMESTAMP": config.TIMESTAMP,
