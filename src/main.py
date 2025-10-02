@@ -12,6 +12,7 @@ from .openai_utils.refine_slide_audio import refine_slide_audio
 from .openai_utils.refine_slide_metadata import refine_slide_metadata
 from .utils.system import get_run_type
 from .utils.consts import EVENT_NAME_MAP
+from .generate_questions import generate_questions_for_topic
 
 from pathlib import Path
 from typing import Any, Dict
@@ -97,6 +98,30 @@ def main() -> None:
             logger.debug(f"Uploading slides metadata to S3: {s3_slide_json_filepath}")
             write_file_to_s3(slides_json_path, s3_slide_json_filepath)
             logger.info(f"Uploaded the slide metadata to S3 at {s3_slide_json_filepath}")
+
+        # Generate questions for the lesson topic
+        logger.info("Generating questions for the lesson topic.")
+        try:
+            # Database connection URL for local PostgreSQL
+            database_url = os.getenv("DATABASE_URL", "postgresql+psycopg2://username:password@localhost:5432/database_name")
+            
+            # Get OpenAI API key from environment
+            openai_api_key = os.getenv("OPENAI_API_KEY")
+            if not openai_api_key:
+                logger.warning("OPENAI_API_KEY not found in environment variables")
+            else:
+                # Generate questions for the lesson topic
+                question_id = generate_questions_for_topic(
+                    topic=lesson_plan['topic'],
+                    database_url=database_url,
+                    openai_api_key=openai_api_key
+                )
+                logger.info(f"Generated question with ID: {question_id}")
+                event['question_id'] = question_id
+        except Exception as e:
+            logger.error(f"Failed to generate questions: {e}")
+            # Continue with the pipeline even if question generation fails
+            event['question_generation_error'] = str(e)
 
         return_dict = {
             "TIMESTAMP": config.TIMESTAMP,

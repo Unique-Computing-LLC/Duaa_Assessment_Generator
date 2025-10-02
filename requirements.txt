@@ -5,3 +5,5 @@ pandas
 openai
 requests
 instructor
+sqlalchemy
+psycopg2-binary
